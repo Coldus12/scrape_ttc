@@ -2,6 +2,7 @@ from __future__ import print_function
 import getopt, sys
 import pickle
 import time
+import os
 from bs4 import BeautifulSoup
 from selenium import webdriver
 
@@ -13,12 +14,12 @@ def get_listings_from_page(driver, url, nr, max_price=None):
     driver.get(url + "&page=" + str(nr))
 
     # Add cookies
-    cookies = pickle.load(open("cookies.pkl", "rb"))
-    for cookie in cookies:
-        driver.add_cookie(cookie)
-
-    # Wait 3 seconds for page to fully load
-    time.sleep(1)
+    if (os.path.exists("cookies.pkl")):
+        cookies = pickle.load(open("cookies.pkl", "rb"))
+        for cookie in cookies:
+            driver.add_cookie(cookie)
+    else:
+        print("Couldn't load cookies.pkl, please run save_cookies.py first!")
 
     # Get ready to parse page
     soup = BeautifulSoup(driver.page_source, 'html.parser')

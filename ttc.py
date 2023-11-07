@@ -13,6 +13,9 @@ def get_listings_from_page(driver, url, nr, max_price=None):
     # Load webpage
     driver.get(url + "&page=" + str(nr))
 
+    # wait for page to load the json data in
+    time.sleep(1)
+    
     # Add cookies
     if (os.path.exists("cookies.pkl")):
         cookies = pickle.load(open("cookies.pkl", "rb"))
